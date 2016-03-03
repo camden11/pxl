@@ -38,7 +38,7 @@ function convert() {
     canvas.height = $target.height();
     var context = canvas.getContext('2d');
     context.drawImage($target[0], 0, 0, canvas.width, canvas.height);
-    console.log(convertImageToColors(context, docPxlSize, canvas.width, canvas.height));
+    pxlate(convertImageToColors(context, docPxlSize, canvas.width, canvas.height));
   })
 }
 
@@ -54,8 +54,8 @@ function convertImageToColors(context, pxlSize, width, height) {
   return allColors;
 }
 
-
 function process() {
   upload();
   convert();
+  pxlate(colors);
 }
