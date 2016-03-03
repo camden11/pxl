@@ -1,3 +1,5 @@
+var docPxlSize = 30;
+
 // Class for RGB color. Converts to css friendly rbg() string
 function Rgb(r, g, b) {
   this.r = r;
@@ -5,7 +7,7 @@ function Rgb(r, g, b) {
   this.b = b;
   
   this.toString = function() {
-    return "rgb(" + this.r.toString(); + ", " + this.g.toString() + ", " + 
+    return "rgb(" + this.r.toString() + ", " + this.g.toString() + ", " + 
       this.b.toString() + ")";
   }
 }
@@ -34,10 +36,24 @@ function convert() {
   $target.on('load', function() {
     canvas.width = $target.width();
     canvas.height = $target.height();
-    canvas.getContext('2d').drawImage($target[0], 0, 0, $target.width, $target.height);
-    console.log(canvas.getContext('2d').getImageData(1,1,1,1).data[0]);
+    var context = canvas.getContext('2d');
+    context.drawImage($target[0], 0, 0, canvas.width, canvas.height);
+    console.log(convertImageToColors(context, docPxlSize, canvas.width, canvas.height));
   })
 }
+
+function convertImageToColors(context, pxlSize, width, height) {
+  var allColors = []
+  var iterations = (width * height) / (pxlSize * pxlSize)
+  for (var i = 0; i < iterations; i++) {
+    var imageData = context.getImageData(
+      (i * pxlSize) % width, Math.floor((i * pxlSize / width)) * pxlSize, 1, 1
+    ).data;
+    allColors.push(new Rgb(imageData[0], imageData[1], imageData[2]).toString());
+  }
+  return allColors;
+}
+
 
 function process() {
   upload();
