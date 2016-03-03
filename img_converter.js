@@ -1,3 +1,15 @@
+// Class for RGB color. Converts to css friendly rbg() string
+function Rgb(r, g, b) {
+  this.r = r;
+  this.g = g;
+  this.b = b;
+  
+  this.toString = function() {
+    return "rgb(" + this.r.toString(); + ", " + this.g.toString() + ", " + 
+      this.b.toString() + ")";
+  }
+}
+
 // Adds form image to canvas
 function upload() {
   var $target = document.querySelector('#target');
