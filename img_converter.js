@@ -1,4 +1,4 @@
-var docPxlSize = 30;
+var docPxlsPerLine = 24;
 
 // Class for RGB color. Converts to css friendly rbg() string
 function Rgb(r, g, b) {
@@ -38,13 +38,16 @@ function convert() {
     canvas.height = $target.height();
     var context = canvas.getContext('2d');
     context.drawImage($target[0], 0, 0, canvas.width, canvas.height);
-    pxlate(convertImageToColors(context, docPxlSize, canvas.width, canvas.height));
+    var colors = convertImageToColors(context, docPxlsPerLine, canvas.width, canvas.height);
+    pxlate(colors);
+    addToDocument(colors);
   })
 }
 
-function convertImageToColors(context, pxlSize, width, height) {
-  var allColors = []
-  var iterations = (width * height) / (pxlSize * pxlSize)
+function convertImageToColors(context, pxlsPerLine, width, height) {
+  var allColors = [];
+  var pxlSize = width / pxlsPerLine;
+  var iterations = pxlsPerLine * (height / pxlSize);
   for (var i = 0; i < iterations; i++) {
     var imageData = context.getImageData(
       (i * pxlSize) % width, Math.floor((i * pxlSize / width)) * pxlSize, 1, 1
@@ -54,8 +57,16 @@ function convertImageToColors(context, pxlSize, width, height) {
   return allColors;
 }
 
+function addToDocument(colors) {
+  var i;
+  $('p').append('[');
+  for (i = 0; i < colors.length -1; i++) {
+    $('p').append('"' + colors[i] + '", ');
+  }
+  $('p').append('"' + colors[i] + '"]');
+}
+
 function process() {
   upload();
   convert();
-  pxlate(colors);
 }
