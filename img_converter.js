@@ -6,9 +6,8 @@ function Rgb(r, g, b) {
   this.g = g;
   this.b = b;
   
-  this.toString = function() {
-    return "rgb(" + this.r.toString() + ", " + this.g.toString() + ", " + 
-      this.b.toString() + ")";
+  this.toArray = function() {
+    return [this.r, this.g, this.b];
   }
 }
 
@@ -39,7 +38,7 @@ function convert() {
     var context = canvas.getContext('2d');
     context.drawImage($target[0], 0, 0, canvas.width, canvas.height);
     var colors = convertImageToColors(context, docPxlsPerLine, canvas.width, canvas.height);
-    pxlate(colors);
+    new PxlGrid(colors, 0);
     addToDocument(colors);
   })
 }
@@ -52,18 +51,17 @@ function convertImageToColors(context, pxlsPerLine, width, height) {
     var imageData = context.getImageData(
       (i * pxlSize) % width, Math.floor((i * pxlSize / width)) * pxlSize, 1, 1
     ).data;
-    allColors.push(new Rgb(imageData[0], imageData[1], imageData[2]).toString());
+    allColors.push(new Rgb(imageData[0], imageData[1], imageData[2]).toArray());
   }
   return allColors;
 }
 
 function addToDocument(colors) {
-  var i;
   $('p').append('[');
-  for (i = 0; i < colors.length -1; i++) {
-    $('p').append('"' + colors[i] + '", ');
+  for (var i = 0; i < colors.length -1; i++) {
+    $('p').append('[' + colors[i][0] + ',' + colors[i][1] + ',' + colors[i][2] + '],');
   }
-  $('p').append('"' + colors[i] + '"]');
+  $('p').append('[' + colors[i][0] + ',' + colors[i][1] + ',' + colors[i][2] + ']]');
 }
 
 function process() {
