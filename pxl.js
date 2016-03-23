@@ -3,50 +3,70 @@ function PxlGrid(colorArrays, rowLength) {
   
   // Converts color arrays to color objects
   this.convertColorArrays = function(colorArrays) {
-    var colorObjects = [];
+    var pxls = [];
     for (var i = 0; i < colorArrays.length; i++) {
-      colorObjects.push(new Rgb(colorArrays[i][0],
+      pxls.push(new Pxl(colorArrays[i][0],
                                 colorArrays[i][1],
-                                colorArrays[i][2]));
+                                colorArrays[i][2], i));
     }
-    return colorObjects;
+    return pxls;
   }
   
-  this.colors = this.convertColorArrays(colorArrays);
+  this.pxls = this.convertColorArrays(colorArrays);
   this.rowLength = rowLength;
-  
-  // Add a pxl to the document
-  this.makePxl = function(color, index) {
-    $('.pxl-container').append("<div class='pxl' data-pxlid='" + index.toString() + "' style='background-color: " + color.color(1) + ";'></div>");
-  }
   
   // Converts colors to pxls in the document
   this.pxlate = function() {
-    for (var i = 0; i < this.colors.length; i++) {
-      this.makePxl(this.colors[i], i);
+    for (var i = 0; i < this.pxls.length; i++) {
+      this.pxls[i].renderOnto($('.pxl-container'))
     }
+  }
+  
+  this.listen = function() {
+    var pxls = this.pxls;
+    $('.pxl').hover(
+      function() {
+        var index = $(this).data('pxlid');
+        pxls[index].changeColor(.75);
+      },
+      function() {
+        var index = $(this).data('pxlid');
+        pxls[index].changeColor(1);
+      }
+    );
   }
 }
 
 
-// An rgb color
-function Rgb(red, green, blue) {
+// Represents one pxl square
+function Pxl(red, green, blue, pxlid) {
   this.red = red;
   this.green = green;
   this.blue = blue;
+  this.pxlid =pxlid;
   
   this.toString = function(r, g, b) {
     return "rgb(" + r.toString() + ", " + g.toString() + ", " + 
       b.toString() + ")";
   }
   
-  this.color = function(level) {
-    var factor = 1 / level;
+  // Changes color by a ratio of the given level
+  this.color = function(factor) {
     var red = Math.floor(factor * this.red);
     var green = Math.floor(factor * this.green);
     var blue = Math.floor(factor * this.blue);
     return this.toString(red, green, blue);
   }
+  
+  this.changeColor = function(level) {
+    $("[data-pxlid='" + this.pxlid.toString() +"']").css("background-color", this.color(level));
+  }
+  
+  // Renders this pxl onto the given container
+  this.renderOnto = function($container) {
+    $container.append("<div class='pxl' data-pxlid='" + this.pxlid.toString() + "' style='background-color: " + this.color(1) + ";'></div>");
+  }
+  
 }
 
 
