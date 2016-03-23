@@ -41,6 +41,21 @@ function PxlGrid(colorArrays, rowLength) {
         pxls[index + rowLength -1].changeColor(.825);
         pxls[index + rowLength +1].changeColor(.825);
         pxls[index + 2 * rowLength].changeColor(.9);
+        
+        pxls[index - rowLength - 2].changeColor(.95);
+        pxls[index - rowLength + 2].changeColor(.95);
+        pxls[index + rowLength - 2].changeColor(.95);
+        pxls[index + rowLength + 2].changeColor(.95);
+        
+        pxls[index - 2 * rowLength - 1].changeColor(.95);
+        pxls[index - 2 * rowLength + 1].changeColor(.95);
+        pxls[index + 2 * rowLength - 1].changeColor(.95);
+        pxls[index + 2 * rowLength + 1].changeColor(.95);
+        
+        pxls[index - 2 * rowLength - 2].changeColor(.97);
+        pxls[index - 2 * rowLength + 2].changeColor(.97);
+        pxls[index + 2 * rowLength - 2].changeColor(.97);
+        pxls[index + 2 * rowLength + 2].changeColor(.97);
       },
       function() {
         var index = $(this).data('pxlid');
@@ -58,6 +73,21 @@ function PxlGrid(colorArrays, rowLength) {
         pxls[index + rowLength -1].changeColor(1);
         pxls[index + rowLength +1].changeColor(1);
         pxls[index + 2 * rowLength].changeColor(1);
+        
+        pxls[index - rowLength - 2].changeColor(1);
+        pxls[index - rowLength + 2].changeColor(1);
+        pxls[index + rowLength - 2].changeColor(1);
+        pxls[index + rowLength + 2].changeColor(1);
+        
+        pxls[index - 2 * rowLength - 1].changeColor(1);
+        pxls[index - 2 * rowLength + 1].changeColor(1);
+        pxls[index + 2 * rowLength - 1].changeColor(1);
+        pxls[index + 2 * rowLength + 1].changeColor(1);
+        
+        pxls[index - 2 * rowLength - 2].changeColor(1);
+        pxls[index - 2 * rowLength + 2].changeColor(1);
+        pxls[index + 2 * rowLength - 2].changeColor(1);
+        pxls[index + 2 * rowLength + 2].changeColor(1);
       }
     );
   }
