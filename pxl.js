@@ -1,5 +1,5 @@
 // A grid of pxls
-function PxlGrid(colorArrays, rowLength) {
+function PxlGrid(colorArrays, rowLength, minWidth) {
   
   // Converts color arrays to color objects
   this.convertColorArrays = function(colorArrays) {
@@ -14,12 +14,32 @@ function PxlGrid(colorArrays, rowLength) {
   
   this.pxls = this.convertColorArrays(colorArrays);
   this.rowLength = rowLength;
+  this.minWidth = minWidth;
+  
+  // Sets size of all pxls based on row size
+  this.setPxlSize = function() {
+    $('.pxl').css({'width': (100/this.rowLength).toString() + '%',
+                   'padding-bottom': (100/this.rowLength).toString() + '%'});
+  }
+  
   
   // Converts colors to pxls in the document
   this.pxlate = function() {
+    $('.pxl-container').css('min-width', this.minWidth)
     for (var i = 0; i < this.pxls.length; i++) {
-      this.pxls[i].renderOnto($('.pxl-container'))
+      this.pxls[i].renderOnto($('.pxl-container'));
     }
+    this.setPxlSize();
+  }
+  
+  this.removeRow = function() {
+    for (var i = 0; i < (this.pxls.length / this.rowLength); i++) {
+      console.log(i);
+      this.pxls[i * this.rowLength - i].remove();
+      this.pxls.splice(i, 1);
+    }
+    this.rowLength -= 1;
+    this.setPxlSize();
   }
   
   this.listen = function() {
@@ -121,6 +141,10 @@ function Pxl(red, green, blue, pxlid) {
   // Renders this pxl onto the given container
   this.renderOnto = function($container) {
     $container.append("<div class='pxl' data-pxlid='" + this.pxlid.toString() + "' style='background-color: " + this.color(1) + ";'></div>");
+  }
+  
+  this.remove = function() {
+    $("[data-pxlid='" + this.pxlid.toString() +"']").remove();
   }
   
 }
