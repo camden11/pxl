@@ -33,10 +33,11 @@ function PxlGrid(colorArrays, rowLength, minWidth) {
   }
   
   this.removeRow = function() {
-    for (var i = 0; i < (this.pxls.length / this.rowLength); i++) {
+    var columnSize = this.pxls.length / this.rowLength
+    for (var i = 0; i < (columnSize); i++) {
       console.log(i);
-      this.pxls[i * this.rowLength - i].remove();
-      this.pxls.splice(i, 1);
+      this.pxls[(columnSize - i) * this.rowLength - 1].remove();
+      this.pxls.splice((columnSize - i) * this.rowLength - 1, 1);
     }
     this.rowLength -= 1;
     this.setPxlSize();
@@ -144,7 +145,7 @@ function Pxl(red, green, blue, pxlid) {
   }
   
   this.remove = function() {
-    $("[data-pxlid='" + this.pxlid.toString() +"']").remove();
+    $("[data-pxlid='" + this.pxlid.toString() +"']").css('display', 'none');
   }
   
 }
